@@ -13,10 +13,10 @@ QuarterLocation <- c(22, 22, 22, 22, 22, 22, 24, 24, 24, 24, 24, 24, 24, 24, 24,
 
 # dataframes
 
-Pennies.df <- data.frame(A=PennyLocation,B="Pennies")
-Nickels.df <- data.frame(A=NickelLocation,B="Nickels")
-Dimes.df <- data.frame(A=DimeLocation,B="Dimes")
-Quarters.df <- data.frame(A=QuarterLocation,B="Quarters")
+Pennies.df <- data.frame(loc=PennyLocation,cointype="Pennies")
+Nickels.df <- data.frame(loc=NickelLocation,cointype="Nickels")
+Dimes.df <- data.frame(loc=DimeLocation,cointype="Dimes")
+Quarters.df <- data.frame(loc=QuarterLocation,cointype="Quarters")
 
 # combining data frames
 
@@ -24,7 +24,8 @@ AllCoinsLoc.df <- rbind(Pennies.df,Nickels.df,Dimes.df,Quarters.df)
 
 # plot
 
-ggplot(AllCoinsLoc.df,aes(x=B,y=A)) +
+ggplot(AllCoinsLoc.df,aes(x=cointype,y=loc)) +
+  
   geom_boxplot() +
   geom_jitter(position=position_jitter(0.2)) +
   labs(title="Plot of coin position by transect distance",
@@ -32,11 +33,10 @@ ggplot(AllCoinsLoc.df,aes(x=B,y=A)) +
 
 # ANOVA test
 
-aovCoinLoc <- aov(A ~ B, data=AllCoinsLoc.df)
+aovCoinLoc <- aov(loc~cointype, data=AllCoinsLoc.df)
 print(model.tables(aovCoinLoc,"means"),digits=3)
 summary(aovCoinLoc)
 
 # tukey test
 
-tuk<-TukeyHSD(aovCoinLoc)
-tuk
+TukeyHSD(aovCoinLoc)
